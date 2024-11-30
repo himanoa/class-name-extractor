@@ -16,6 +16,10 @@ import Node.Path (FilePath, basename, dirname, extname)
 import Node.Path as Path
 
 newtype FileBody = FileBody String
+
+coerceFileBody :: FileBody -> String
+coerceFileBody (FileBody s) = s
+
 derive instance Generic FileBody _
 instance Show FileBody where
   show (FileBody s) = s
