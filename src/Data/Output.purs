@@ -34,7 +34,8 @@ instance Eq Namespace where
 data Output
   = CssFile {
     namespace :: Namespace,
-    body :: FileBody
+    body :: FileBody,
+    name :: String
   }
   | JsFile {
     path :: FilePath,
@@ -87,11 +88,11 @@ capitalizeFilename path =
 
 -- | Make a CSS file output
 -- | ```purescript run
--- | > makeCssFile (Namespace "Data.Foo.Bar") ".foo { display: flex }"
+-- | > makeCssFile (Namespace "Data.Foo.Bar") ".foo { display: flex }" styles.module.css
 -- | CssFile { namesapce: Namespace "Data.Foo.Bar", body: ".foo { display: flex }"  }
 -- | ```
-makeCssFile :: Namespace -> FileBody -> Output
-makeCssFile ns fb =  CssFile { namespace: ns, body: fb }
+makeCssFile :: Namespace -> FileBody -> String -> Output
+makeCssFile ns fb name =  CssFile { namespace: ns, body: fb, name : name }
 
 
 -- | Make a Js file output

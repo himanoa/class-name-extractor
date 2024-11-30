@@ -14,7 +14,7 @@ spec = do
     describe "when css file" do
       it "should be body" do
         let body = FileBody ".foo { display: flex; }" 
-        renderOutput (CssFile { body, namespace: Namespace "Unused" }) `shouldEqual` body
+        renderOutput (CssFile { body, namespace: Namespace "Unused", name: "unused" }) `shouldEqual` body
 
     describe "when js file" do
       it "should be ffi implementation" do
