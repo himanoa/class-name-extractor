@@ -2,13 +2,15 @@ module ClassNameExtractor.Data.Output where
 
 import Prelude
 
-import ClassNameExtractor.CssParser (SelectorF)
+import ClassNameExtractor.CssParser (SelectorF(..))
+import Data.Array as Array
 import Data.Eq.Generic (genericEq)
 import Data.Generic.Rep (class Generic)
-import Data.List (List)
+import Data.Interpolate (i)
+import Data.List (List(..))
 import Data.Maybe (Maybe(..))
 import Data.Show.Generic (genericShow)
-import Data.String (Pattern(..), Replacement(..), replace, toUpper)
+import Data.String (Pattern(..), Replacement(..), joinWith, replace, toUpper)
 import Data.String.CodeUnits (singleton, uncons)
 import Node.Path (FilePath, basename, dirname, extname)
 import Node.Path as Path
@@ -35,7 +37,8 @@ data Output
     body :: FileBody
   }
   | JsFile {
-    path :: FilePath
+    path :: FilePath,
+    stylePath:: FilePath
   }
   | PursFile {
     namespace :: Namespace,
@@ -97,7 +100,7 @@ makeCssFile ns fb =  CssFile { namespace: ns, body: fb }
 -- | JsFile { path ::  "./src/components/Styles.js" } 
 -- | ```
 makeJsFile :: FilePath -> Output
-makeJsFile path = JsFile { path: capitalizeFilename $ replaceExt path "js"  }
+makeJsFile path = JsFile { path: capitalizeFilename $ replaceExt path "js", stylePath: path  }
 
 
 -- | Make a Purs file output
@@ -107,3 +110,45 @@ makeJsFile path = JsFile { path: capitalizeFilename $ replaceExt path "js"  }
 -- | ```
 makePursFile :: Namespace -> FilePath -> List SelectorF  -> Output
 makePursFile namespace path classNames =  PursFile { path: capitalizeFilename $ replaceExt path "purs", namespace, classNames }
+
+-- | Convert Output to FileBody. This function extracts the content from CSS files
+-- | CSS file -> Extracts the content
+-- | JS file -> Generates a JavaScript module that imports and exports CSS modules with a helper function
+-- | Purs file -> Generates a PureScript module that exports class names as constants with an FFI helper function
+renderOutput :: Output -> FileBody
+renderOutput (CssFile { body }) =  body
+renderOutput (JsFile { stylePath }) = FileBody $ i """
+import s from "./""" fileName """"
+export const _styles = (name) => s[name]
+"""
+  where
+  fileName :: String
+  fileName = basename stylePath
+
+renderOutput (PursFile { classNames, namespace }) = 
+  FileBody $ ("""module """ <> (show namespace) <> """ """ <> exports <> """ where
+foreign import _styles :: String -> String
+""" <> classNameHelpers classNames)
+  where
+    exports :: String
+    exports = case classNames of
+      Nil -> ""
+      classes -> "(" <> (joinedClassNames classes) <> ")"
+
+    className :: SelectorF -> String
+    className (Class s)  = s
+    -- This pattern is unused. Because classNames filtered only Class
+    className _ = ""
+
+    classNameArray :: List SelectorF -> Array String
+    classNameArray = Array.fromFoldable <<< (map className)
+
+    joinedClassNames :: List SelectorF -> String
+    joinedClassNames xs = joinWith "," (classNameArray xs)
+
+    classNameHelper :: SelectorF -> String
+    classNameHelper (Class name) = name <> " :: String\n" <> name <> " = " <> "\"" <> name <> "\""
+    classNameHelper _ = ""
+
+    classNameHelpers :: List SelectorF -> String
+    classNameHelpers cs = joinWith "\n" (Array.fromFoldable (map classNameHelper cs))
