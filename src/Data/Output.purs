@@ -153,3 +153,12 @@ foreign import _styles :: String -> String
 
     classNameHelpers :: List SelectorF -> String
     classNameHelpers cs = joinWith "\n" (Array.fromFoldable (map classNameHelper cs))
+
+
+-- | Returns the destination file path for the given output.
+-- | The path is determined based on the output type and configuration settings.
+getDistPath :: Output -> FilePath
+getDistPath (JsFile { path }) = path
+getDistPath (CssFile { namespace, name }) = Path.concat ["output", show namespace, name ]
+getDistPath (PursFile { path }) = path
+

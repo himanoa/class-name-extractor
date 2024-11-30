@@ -3,7 +3,7 @@ module Test.ClassNameExtractor.Data.OutputSpec where
 import Prelude
 
 import ClassNameExtractor.CssParser (SelectorF(..))
-import ClassNameExtractor.Data.Output (FileBody(..), Namespace(..), Output(..), makeJsFile, makePursFile, renderOutput)
+import ClassNameExtractor.Data.Output (FileBody(..), Namespace(..), Output(..), getDistPath, makeCssFile, makeJsFile, makePursFile, renderOutput)
 import Data.List as L
 import Test.Spec (Spec, describe, it)
 import Test.Spec.Assertions (shouldEqual)
@@ -49,3 +49,9 @@ foo = "foo"
 bar :: String
 bar = "bar""""
           renderOutput (makePursFile (Namespace "Foo") "./src/components/styles.module.css" (L.fromFoldable [Class "foo", Class "bar"])) `shouldEqual` body
+
+  describe "getDistPath" do
+    describe "when css files" do
+      it "should be output/Components.Foo/styles.module.css" do
+        let result = getDistPath (makeCssFile (Namespace "Components.Foo") (FileBody ".foo { display: flex; }") "styles.module.css")
+        result `shouldEqual` "output/Components.Foo/styles.module.css"
