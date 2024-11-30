@@ -2,3 +2,4 @@ node_modules
 .spago
 output
 dist
+.spec-results

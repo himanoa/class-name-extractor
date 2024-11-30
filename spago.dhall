@@ -10,8 +10,27 @@ When creating a new Spago project, you can use
 `spago init --no-comments` or `spago init -C`
 to generate this file without the comments in this block.
 -}
-{ name = "my-project"
-, dependencies = [ "console", "effect", "prelude" ]
+{ name = "css-class-name-extractor"
+, dependencies =
+  [ "aff"
+  , "arrays"
+  , "console"
+  , "control"
+  , "effect"
+  , "either"
+  , "enums"
+  , "foldable-traversable"
+  , "identity"
+  , "lists"
+  , "maybe"
+  , "parsing"
+  , "prelude"
+  , "spec"
+  , "spec-node"
+  , "strings"
+  , "tuples"
+  , "spec-discovery"
+  ]
 , packages = ./packages.dhall
-, sources = [ "src/**/*.purs", "test/**/*.purs" ]
+, sources = [ "src/**/*.purs"]
 }
