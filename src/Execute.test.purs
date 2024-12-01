@@ -92,7 +92,7 @@ export const _styles = (name) => s[name]
         let expectedContent = FileBody """module Foo (foo) where
 foreign import _styles :: String -> String
 foo :: String
-foo = "foo""""
+foo = _styles "foo""""
         case result of 
           Tuple _ finalFS -> do
             let generatedFile = Map.lookup "components/Styles.module.purs" finalFS

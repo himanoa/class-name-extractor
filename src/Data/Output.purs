@@ -152,7 +152,7 @@ foreign import _styles :: String -> String
     joinedClassNames xs = joinWith "," (classNameArray xs)
 
     classNameHelper :: SelectorF -> String
-    classNameHelper (Class name) = name <> " :: String\n" <> name <> " = " <> "\"" <> name <> "\""
+    classNameHelper (Class name) = name <> " :: String\n" <> name <> " = " <> "_styles " <> "\"" <> name <> "\""
     classNameHelper _ = ""
 
     classNameHelpers :: List SelectorF -> String

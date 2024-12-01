@@ -38,16 +38,16 @@ export const _styles = (name) => s[name]
           let body = FileBody """module Foo (foo) where
 foreign import _styles :: String -> String
 foo :: String
-foo = "foo""""
+foo = _styles "foo""""
           renderOutput (makePursFile (Namespace "Foo") "./src/components/styles.module.css" (L.fromFoldable [Class "foo"])) `shouldEqual` body
       describe "multi class" do
         it "should be include helper functions"  do
           let body = FileBody """module Foo (foo,bar) where
 foreign import _styles :: String -> String
 foo :: String
-foo = "foo"
+foo = _styles "foo"
 bar :: String
-bar = "bar""""
+bar = _styles "bar""""
           renderOutput (makePursFile (Namespace "Foo") "./src/components/styles.module.css" (L.fromFoldable [Class "foo", Class "bar"])) `shouldEqual` body
 
   describe "getDistPath" do
