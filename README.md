@@ -1,5 +1,9 @@
 # ClassNameExtractor
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/@himanoa%2Fclass-name-extractor.svg)](https://badge.fury.io/js/@himanoa%2Fclass-name-extractor)
+[![Test](https://github.com/himanoa/class-name-extractor/actions/workflows/ci.yml/badge.svg)](https://github.com/himanoa/class-name-extractor/actions/workflows/ci.yml)
+
 When using [Vite's CSS Modules feature](https://vitejs.dev/guide/features#css-modules) with PureScript, there are two main issues:
 1. Since PureScript cannot directly import CSS, you need to prepare JavaScript code using [FFI](https://github.com/purescript/documentation/blob/master/guides/FFI.md) to import CSS and retrieve styles based on class name information, making it accessible from PureScript.
 2. While `spago build` can output the JavaScript file that imports CSS and the compiled PureScript results to `output/`, the CSS files imported by JavaScript are not placed in `output`. As a result, Vite cannot resolve the CSS import part, causing build errors.
@@ -44,7 +48,7 @@ class-name-extractor <css-file-path> <purescript-module-name>
 
 Example:
 ```bash
-class-name-extractor src/components/Button/styles.module.css YourProject.Components.Button
+class-name-extractor src/components/Button/styles.module.css YourProject.Components.Button.Styles
 ```
 
 ### Generated Files
