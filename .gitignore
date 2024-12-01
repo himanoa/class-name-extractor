@@ -2,5 +2,6 @@ node_modules
 .spago
 output
 dist/*
+!dist/.gitkeep
 .spec-results
 .psc-ide-port
