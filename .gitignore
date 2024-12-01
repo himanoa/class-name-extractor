@@ -1,6 +1,6 @@
 node_modules
 .spago
 output
-dist
+dist/*
 .spec-results
 .psc-ide-port
