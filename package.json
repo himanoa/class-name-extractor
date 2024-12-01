@@ -1,6 +1,6 @@
 {
   "name": "@himanoa/class-name-extractor",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "ClassNameExtractor solves these problems by providing FFI setup that can extract class names by parsing CSS for safe style resolution, and by providing functionality to place CSS in the `output` directory.",
   "main": "./dist/main.cjs",
   "type": "commonjs",
