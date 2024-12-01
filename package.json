@@ -9,6 +9,9 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "bin": {
+    "class-name-extractor": "dist/main.cjs"
+  },
   "scripts": {
     "test": "spago test",
     "build": "spago build && esbuild --bundle --platform=node main.mjs > dist/main.cjs && chmod +x dist/main.cjs",
