@@ -1,13 +1,16 @@
 {
   "name": "@himanoa/class-name-extractor",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "ClassNameExtractor solves these problems by providing FFI setup that can extract class names by parsing CSS for safe style resolution, and by providing functionality to place CSS in the `output` directory.",
   "main": "./dist/main.cjs",
   "type": "commonjs",
   "scripts": {
     "test": "spago test",
     "build": "spago build && esbuild --bundle --platform=node main.mjs > dist/main.cjs && chmod +x dist/main.cjs",
-    "publint": "publint"
+    "publint": "publint",
+    "changeset": "changeset",
+    "bump": "changeset version",
+    "publish": "changeset publish"
   },
   "keywords": [
     "purescript",
@@ -26,6 +29,7 @@
   "license": "MIT",
   "packageManager": "pnpm@9.12.3+sha512.cce0f9de9c5a7c95bef944169cc5dfe8741abfb145078c0d508b868056848a87c81e626246cb60967cbd7fd29a6c062ef73ff840d96b3c86c40ac92cf4a813ee",
   "devDependencies": {
+    "@changesets/cli": "2.27.10",
     "esbuild": "0.24.0",
     "publint": "0.2.12",
     "purescript": "0.15.15",
