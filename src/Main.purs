@@ -1,4 +1,4 @@
-module Main where
+module ClassNameExtractor.Main where
 
 import Prelude
 
