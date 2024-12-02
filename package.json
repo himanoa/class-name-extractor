@@ -18,7 +18,8 @@
     "publint": "publint",
     "changeset": "changeset",
     "bump": "changeset version",
-    "publish": "changeset publish"
+    "publish": "changeset publish",
+    "start": "spago run -m ClassNameExtractor.Main"
   },
   "keywords": [
     "purescript",
