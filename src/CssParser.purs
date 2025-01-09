@@ -199,9 +199,26 @@ selectors = do
 
 type CSS = String
 
+skipAtRule :: Parser String Unit
+skipAtRule = do
+  skipSpaces
+  void $ char '@'
+  void $ many (noneOf ['{'])
+  void $ char '{'
+  void $ manyTill skipNested (char '}')
+  skipSpaces
+  where
+    skipNested = do
+      void $ many (noneOf ['{', '}'])
+      optional do
+        void $ char '{'
+        void $ manyTill (noneOf ['}']) (char '}')
+      skipSpaces
+
 stripDeclarationBlock :: Parser String String 
 stripDeclarationBlock = do
   skipSpaces
+  optional skipSpaces
   sel <- many (noneOf ['{'])
   _ <- (string "{")
   _ <- manyTill (noneOf ['}']) (char '}')
@@ -210,7 +227,9 @@ stripDeclarationBlock = do
 
 stripAllDeclarationBlocks :: Parser String (List String)
 stripAllDeclarationBlocks = do
-  results <- many stripDeclarationBlock
+  results <- many do
+    try skipAtRule <|> pure unit
+    try stripDeclarationBlock
   pure $ results
 
 erasureDeclarationBlocks :: CSS -> Either ParseError (List String)
