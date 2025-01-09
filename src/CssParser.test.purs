@@ -230,6 +230,14 @@ spec = do
     it "should return to .foo ~ .bar" do
       extractClassNames ".foo ~ .bar { display: flex; }" `shouldEqual` Right (L.fromFoldable [Class "foo", Class "bar" ])
 
+    describe "when include pseudo" do
+      it "should return to className" do
+        extractClassNames ".foo:hover { display: flex; } .bar {}" `shouldEqual` Right (L.fromFoldable [Class "foo", Class "bar" ])
+
+    describe "when include keyframe" do
+      it "should return to className" do
+        extractClassNames ".foo:hover { display: flex; } .bar {} @keyframes foo {}" `shouldEqual` Right (L.fromFoldable [Class "foo", Class "bar" ])
+
     it "should return to .foo ~ .bar { display: flex; } .hoge #id {}" do
       extractClassNames ".foo ~ .bar { display: flex; } .hoge #id {}" `shouldEqual` Right (L.fromFoldable [Class "foo", Class "bar", Class "hoge", Id "id"])
     where
